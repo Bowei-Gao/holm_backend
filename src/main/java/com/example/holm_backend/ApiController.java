@@ -22,6 +22,16 @@ public class ApiController {
         return new StrategicOutput(counter.incrementAndGet(), result_add_algorithm);
     }
 
+    @PostMapping("/assignment")
+    public AssignmentOutput assignment(@RequestBody AssignmentInput input) {
+        Double[][] distances = input.getDistances();
+        Integer[] inventory = input.getInventory();
+        Integer[] demand = input.getDemand();
+        Algorithm algorithm = new Algorithm(distances, inventory, demand);
+        List<LinkedList<Integer>> result_algorithm = algorithm.getAssignment();
+        return new AssignmentOutput(counter.incrementAndGet(), result_algorithm);
+    }
+
     @PostMapping("/planning")
     public PlanningOutput planning(@RequestBody PlanningInput input) {
         int loading_capacity = input.getLoading_capacity();
