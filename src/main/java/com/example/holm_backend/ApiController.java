@@ -24,11 +24,11 @@ public class ApiController {
 
     @PostMapping("/assignment")
     public AssignmentOutput assignment(@RequestBody AssignmentInput input) {
-        Double[][] distances = input.getDistances();
+        Integer[][] distances = input.getDistances();
         Integer[] inventory = input.getInventory();
         Integer[] demand = input.getDemand();
         Algorithm algorithm = new Algorithm(distances, inventory, demand);
-        List<LinkedList<Integer>> result_algorithm = algorithm.getAssignment();
+        List<LinkedList<Integer>> result_algorithm = algorithm.getAssignments();
         return new AssignmentOutput(counter.incrementAndGet(), result_algorithm);
     }
 

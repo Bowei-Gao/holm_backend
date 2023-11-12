@@ -1,18 +1,15 @@
 package com.example.holm_backend;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 public class AssignmentInput {
-    private Double[][] distances;
+    private Integer[][] distances;
     private Integer[] inventory;
     private Integer[] demand;
 
-    public Double[][] getDistances() {
+    public Integer[][] getDistances() {
         return distances;
     }
 
-    public void setDistances(Double[][] distances) {
+    public void setDistances(Integer[][] distances) {
         this.distances = distances;
     }
 
