@@ -7,3 +7,9 @@ Now you just need to complete the following step without running the frontend.
 ```sh
 java -jar target/holm_backend-0.0.1-SNAPSHOT.jar
 ```
+
+## Or you can download the .jar file from the target folder and run the following commend without pulling the whole project
+
+```sh
+java -jar holm_backend-0.0.1-SNAPSHOT.jar
+```
