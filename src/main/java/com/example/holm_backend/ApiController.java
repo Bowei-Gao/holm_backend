@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api")
 public class ApiController {
     private final AtomicLong counter = new AtomicLong();
