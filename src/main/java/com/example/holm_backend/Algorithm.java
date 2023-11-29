@@ -9,6 +9,8 @@ public class Algorithm {
     private List<LinkedList<Integer>> distances = new ArrayList<>();
     private List<Integer> differencesOfColumns = new ArrayList<>();
     private List<Integer> differencesOfRows = new ArrayList<>();
+    private List<Integer> warehouses = new ArrayList<>();
+    private List<Integer> recipients = new ArrayList<>();
 
     public Algorithm(Integer[][] distances, Integer[] inventory, Integer[] demand) {
         for (Integer[] distance : distances) {
@@ -21,10 +23,12 @@ public class Algorithm {
 
         for (int i = 0; i < this.inventories.size(); i++) {
             this.differencesOfRows.add(0);
+            this.warehouses.add(i+1);
         }
 
         for (int i = 0; i < this.demands.size(); i++) {
             this.differencesOfColumns.add(0);
+            this.recipients.add(i+1);
         }
     }
 
@@ -66,6 +70,7 @@ public class Algorithm {
 
     private void eraseColumn(int columnIdx) {
         this.demands.remove(columnIdx);
+        this.recipients.remove(columnIdx);
         this.differencesOfColumns.remove(columnIdx);
         for (List<Integer> row : this.distances) {
             row.remove(columnIdx);
@@ -74,6 +79,7 @@ public class Algorithm {
 
     private void eraseRow(int rowIdx) {
         this.inventories.remove(rowIdx);
+        this.warehouses.remove(rowIdx);
         this.differencesOfRows.remove(rowIdx);
         this.distances.remove(rowIdx);
     }
@@ -167,8 +173,9 @@ public class Algorithm {
             int rowIdx = indices[1];
 
             LinkedList<Integer> assignment = new LinkedList<>();
-            assignment.add(rowIdx);
-            assignment.add(columnIdx);
+            assignment.add(this.warehouses.get(rowIdx));
+            assignment.add(this.recipients.get(columnIdx));
+            assignment.add(Math.min(this.inventories.get(rowIdx), this.demands.get(columnIdx)));
             this.assignments.add(assignment);
             // assignments1.add(Math.min(this.inventories.get(rowIdx), this.demands.get(columnIdx)));
 
