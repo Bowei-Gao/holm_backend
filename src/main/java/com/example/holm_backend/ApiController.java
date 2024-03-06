@@ -42,4 +42,43 @@ public class ApiController {
         List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes();
         return new PlanningOutput(counter.incrementAndGet(), result_savings_algorithm);
     }
+
+    @PostMapping("/depotsCreate")
+    public DepotOutput depotsCreate(@RequestBody DepotInput input) throws Exception {
+        String[] names = input.getNames();
+        Double[] x = input.getX();
+        Double[] y = input.getY();
+        Integer[] capacities = input.getCapacities();
+        Integer[] fixed_costs = input.getFixed_costs();
+        CreateDepots createDepots = new CreateDepots(names, x, y, capacities, fixed_costs);
+        /*int result_depotsCreate = CreateDepots.UpdateDatabase();*/
+        return new DepotOutput(counter.incrementAndGet(), 0);
+    }
+
+    @PostMapping("/customersCreate")
+    public CustomerOutput customersCreate(@RequestBody CustomerInput input) throws Exception {
+        String[] names = input.getNames();
+        Double[] x = input.getX();
+        Double[] y = input.getY();
+        Integer[] demand = input.getDemand();
+        CreateCustomers createCustomers = new CreateCustomers(names, x, y, demand);
+        /* List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes(); */
+        return new CustomerOutput(counter.incrementAndGet(), 0);
+    }
+
+    @PostMapping("/depotsDelete")
+    public DepotOutput depotsDelete(@RequestBody DepotInput input) throws Exception {
+        String[] names = input.getNames();
+        DeleteDepots deleteDepots = new DeleteDepots(names);
+        /* List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes(); */
+        return new DepotOutput(counter.incrementAndGet(), 0);
+    }
+
+    @PostMapping("/customersDelete")
+    public CustomerOutput customersDelete(@RequestBody CustomerInput input) throws Exception {
+        String[] names = input.getNames();
+        DeleteCustomers deleteCustomers = new DeleteCustomers(names);
+        /* List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes(); */
+        return new CustomerOutput(counter.incrementAndGet(), 0);
+    }
 }
