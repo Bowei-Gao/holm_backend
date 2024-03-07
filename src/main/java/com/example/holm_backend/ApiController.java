@@ -61,9 +61,9 @@ public class ApiController {
         Double[] x = input.getX();
         Double[] y = input.getY();
         Integer[] demand = input.getDemand();
-        /*CreateCustomers createCustomers = new CreateCustomers(names, x, y, demand);
-        List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes(); */
-        return new CustomerOutput(counter.incrementAndGet(), 0);
+        CreateCustomers createCustomers = new CreateCustomers(names, x, y, demand);
+        int result_customersCreate = createCustomers.UpdateDatabase();
+        return new CustomerOutput(counter.incrementAndGet(), result_customersCreate);
     }
 
     @PostMapping("/depotsDelete")
