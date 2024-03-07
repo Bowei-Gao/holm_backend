@@ -69,16 +69,16 @@ public class ApiController {
     @PostMapping("/depotsDelete")
     public DepotOutput depotsDelete(@RequestBody DepotInput input) throws Exception {
         String[] names = input.getNames();
-        /*DeleteDepots deleteDepots = new DeleteDepots(names);
-        List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes(); */
-        return new DepotOutput(counter.incrementAndGet(), 0);
+        DeleteDepots deleteDepots = new DeleteDepots(names);
+        int result_depotsDelete = deleteDepots.UpdateDatabase();
+        return new DepotOutput(counter.incrementAndGet(), result_depotsDelete);
     }
 
     @PostMapping("/customersDelete")
     public CustomerOutput customersDelete(@RequestBody CustomerInput input) throws Exception {
         String[] names = input.getNames();
-        /* DeleteCustomers deleteCustomers = new DeleteCustomers(names);
-        List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes(); */
-        return new CustomerOutput(counter.incrementAndGet(), 0);
+        DeleteCustomers deleteCustomers = new DeleteCustomers(names);
+        int result_customersDelete = deleteCustomers.UpdateDatabase();
+        return new CustomerOutput(counter.incrementAndGet(), result_customersDelete);
     }
 }
