@@ -50,9 +50,9 @@ public class ApiController {
         Double[] y = input.getY();
         Integer[] capacities = input.getCapacities();
         Integer[] fixed_costs = input.getFixed_costs();
-        /*CreateDepots createDepots = new CreateDepots(names, x, y, capacities, fixed_costs);
-        int result_depotsCreate = CreateDepots.UpdateDatabase();*/
-        return new DepotOutput(counter.incrementAndGet(), 0);
+        CreateDepots createDepots = new CreateDepots(names, x, y, capacities, fixed_costs);
+        int result_depotsCreate = createDepots.UpdateDatabase();
+        return new DepotOutput(counter.incrementAndGet(), result_depotsCreate);
     }
 
     @PostMapping("/customersCreate")

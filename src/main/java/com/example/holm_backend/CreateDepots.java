@@ -33,25 +33,29 @@ public class CreateDepots {
         String JDBC_USER = "root";
         String JDBC_PASSWORD = "password";
 
-        String sql = "INSERT INTO depots (name, x, y, capacity, fixedCost) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO depots (names, x, y, capacity, fixedCost) VALUES (?, ?, ?, ?, ?)";
+
+        int sum = 0;
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM depots")) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        long id = rs.getLong("id");
-                        String names = rs.getString("names");
-                        float x = rs.getFloat("x");
-                        float y = rs.getFloat("y");
-                        int capacity = rs.getInt("capacity");
-                        int fixedCost = rs.getInt("fixedCost");
-                        System.out.println(id);
-                        System.out.println(names + ' ' + x + ' ' + y + ' ' + capacity + ' ' + fixedCost);
-                    }
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                for (int i = 0; i < this.names.length; i++) {
+                    ps.setString(1, this.names[i]);
+                    ps.setDouble(2, this.x[i]);
+                    ps.setDouble(3, this.y[i]);
+                    ps.setInt(4, this.capacities[i]);
+                    ps.setInt(5, this.fixed_costs[i]);
+                    ps.addBatch(); // Add to batch
+                }
+
+                int[] ns = ps.executeBatch();
+
+                for (int n : ns) {
+                    sum += n;
                 }
             }
         }
 
-        return 0;
+        return sum;
     }
 }
