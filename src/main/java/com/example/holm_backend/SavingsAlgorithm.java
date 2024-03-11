@@ -27,8 +27,9 @@ public class SavingsAlgorithm {
     private int maxListIndex;
     private int maxElementIndex;
     private int loading_capacity;
+    private Double[][] ds;
 
-    public SavingsAlgorithm(int loading_capacity, Integer[] delivery_quantities, Double[] x, Double[] y) {
+    public SavingsAlgorithm(int loading_capacity, Integer[] delivery_quantities, Double[] x, Double[] y, Double[][] distances) {
         this.loading_capacity = loading_capacity;
 
         this.coordinates = new ArrayList<>();
@@ -42,6 +43,8 @@ public class SavingsAlgorithm {
         for (int i=0; i<delivery_quantities.length; i++) {
             this.deliveryQuantities.add(delivery_quantities[i]);
         }
+
+        this.ds = distances;
     }
 
     private void initRoutes() {

@@ -1,3 +1,3 @@
 package com.example.holm_backend;
 
-public record CustomerOutput(long id, int count) { }
+public record CustomerOutput(long id, int content) { }

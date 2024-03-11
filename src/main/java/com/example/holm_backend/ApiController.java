@@ -17,7 +17,9 @@ public class ApiController {
         int variable_costs_per_km = input.getVariable_costs_per_km();
         int[] fixed_costs = input.getFixed_costs();
         int[][] distances = input.getDistances();
-        AddAlgorithm addAlgorithm = new AddAlgorithm(fixed_costs ,distances);
+        double[] variable_cost_rates = input.getVariable_cost_rates();
+        double[] weightings = input.getWeightings();
+        AddAlgorithm addAlgorithm = new AddAlgorithm(fixed_costs ,distances, variable_cost_rates, weightings);
         int[] result_add_algorithm = addAlgorithm.getStrategic();
         return new StrategicOutput(counter.incrementAndGet(), result_add_algorithm);
     }
@@ -36,9 +38,14 @@ public class ApiController {
     public PlanningOutput planning(@RequestBody PlanningInput input) {
         int loading_capacity = input.getLoading_capacity();
         Integer[] delivery_quantities = input.getDeliveryQuantities();
+        int[] pick_up_quantities = input.getPickUpQuantities();
         Double[] x = input.getX();
         Double[] y = input.getY();
-        SavingsAlgorithm savingsAlgorithm = new SavingsAlgorithm(loading_capacity, delivery_quantities, x, y);
+        Double[][] distances = input.getDistances();
+        for (int pick_up_quantity : pick_up_quantities) {
+            System.out.println(pick_up_quantity);
+        }
+        SavingsAlgorithm savingsAlgorithm = new SavingsAlgorithm(loading_capacity, delivery_quantities, x, y, distances);
         List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes();
         return new PlanningOutput(counter.incrementAndGet(), result_savings_algorithm);
     }
@@ -52,6 +59,7 @@ public class ApiController {
         Integer[] fixed_costs = input.getFixed_costs();
         CreateDepots createDepots = new CreateDepots(names, x, y, capacities, fixed_costs);
         int result_depotsCreate = createDepots.UpdateDatabase();
+
         return new DepotOutput(counter.incrementAndGet(), result_depotsCreate);
     }
 

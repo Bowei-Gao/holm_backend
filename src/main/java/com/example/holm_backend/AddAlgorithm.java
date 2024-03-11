@@ -12,11 +12,15 @@ public class AddAlgorithm {
     private int[] fixedCosts;
     private int[][] distances;
     private int number_of_locations;
+    private double[] variable_cost_rates;
+    private double[] weightings;
 
-    public AddAlgorithm(int[] fixedCosts,int[][] distances) {
+    public AddAlgorithm(int[] fixedCosts,int[][] distances, double[] variable_cost_rates, double[] weightings) {
         this.fixedCosts = fixedCosts;
         this.distances = distances;
         this.number_of_locations = fixedCosts.length;
+        this.variable_cost_rates = variable_cost_rates;
+        this.weightings = weightings;
         initialize();
     }
 
@@ -40,6 +44,12 @@ public class AddAlgorithm {
     void initialize() {
         for (int i = 0; i < number_of_locations; i++) {
             warehouses.add(i);
+        }
+
+        for (int i = 0; i < distances.length; i ++) {
+            for (int j = 0; j < distances[0].length; j ++) {
+                this.distances[i][j] = (int)(this.distances[i][j] * this.variable_cost_rates[j] * this.weightings[j]);
+            }
         }
 
         costMatrix = getCostMatrix(distances);
