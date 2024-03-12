@@ -5,19 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SavingsAlgorithm {
-
-    static class Coordinate {
-        Double x;
-        Double y;
-
-        Coordinate(Double x, Double y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    private List<Coordinate> coordinates;
+public class SavingsAlgorithmCopy {
     private List<Integer> deliveryQuantities;
     private List<Integer> pick_up_quantities;
     private int n;
@@ -28,25 +16,34 @@ public class SavingsAlgorithm {
     private int maxListIndex;
     private int maxElementIndex;
     private int loading_capacity;
-    private Double[][] ds;
 
-    public SavingsAlgorithm(int loading_capacity, Integer[] delivery_quantities, Integer[] pick_up_quantities, Double[] x, Double[] y, Double[][] distances) {
+    public SavingsAlgorithmCopy(int loading_capacity, Integer[] delivery_quantities, Integer[] pick_up_quantities, Double[][] distances) {
         this.loading_capacity = loading_capacity;
 
-        this.coordinates = new ArrayList<>();
         this.deliveryQuantities = new ArrayList<>();
         this.pick_up_quantities = new ArrayList<>();
-
-        this.coordinates.add(null); // padding to start index from 1
-        for (int i=0; i<x.length; i++) {
-            this.coordinates.add(new Coordinate(x[i], y[i]));
-        }
 
         this.deliveryQuantities.addAll(Arrays.asList(delivery_quantities));
 
         this.pick_up_quantities.addAll(Arrays.asList(pick_up_quantities));
 
-        this.ds = distances;
+        this.dists = new ArrayList<>();
+        for (int i = 1; i < distances[0].length; i++) {
+            this.dists.add(distances[0][i]);
+        }
+
+        this.distances = new ArrayList<>();
+        for (int i = 1; i < distances.length; i++) {
+            this.distances.add(new LinkedList<>());
+            for (int j = 1; j < distances.length; j++) {
+                if (i <= j) {
+                    this.distances.get(i - 1).add(distances[i][j]);
+                }
+                else {
+                    this.distances.get(i - 1).add(distances[j][i]);
+                }
+            }
+        }
     }
 
     private void initRoutes() {
@@ -55,27 +52,6 @@ public class SavingsAlgorithm {
             LinkedList<Integer> route = new LinkedList<>();
             route.add(i);
             this.routes.add(route);
-        }
-    }
-
-    public double getDistance(Coordinate c0, Coordinate c1) {
-        return Math.sqrt(Math.pow(c0.x - c1.x, 2) + Math.pow(c0.y - c1.y, 2));
-    }
-
-    public void getDists() {
-        this.dists = new ArrayList<>();
-        for (int i = 1; i <= this.n; i++) {
-            this.dists.add(this.getDistance(this.coordinates.get(i), new Coordinate(0.0, 0.0)));
-        }
-    }
-
-    public void getDistances() {
-        this.distances = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            this.distances.add(new LinkedList<>());
-            for (int j = 0; j < n; j++) {
-                this.distances.get(i).add(this.getDistance(this.coordinates.get(this.routes.get(i).get(this.routes.get(i).size()-1)), this.coordinates.get(this.routes.get(j).get(0))));
-            }
         }
     }
 
@@ -172,8 +148,6 @@ public class SavingsAlgorithm {
         this.n = this.deliveryQuantities.size();
         initRoutes();
 
-        this.getDists();
-        this.getDistances();
         this.getSavings();
         this.argmax(this.savings);
 

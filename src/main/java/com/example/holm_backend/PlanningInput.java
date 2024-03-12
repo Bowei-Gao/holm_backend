@@ -3,7 +3,7 @@ package com.example.holm_backend;
 public class PlanningInput {
     private int loading_capacity;
     private Integer[] deliveryQuantities;
-    private int[] pickUpQuantities;
+    private Integer[] pickUpQuantities;
     private Double[] x;
     private Double[] y;
     private Double[][] distances;
@@ -48,11 +48,11 @@ public class PlanningInput {
         this.distances = distances;
     }
 
-    public int[] getPickUpQuantities() {
+    public Integer[] getPickUpQuantities() {
         return pickUpQuantities;
     }
 
-    public void setPickUpQuantities(int[] pickUpQuantities) {
+    public void setPickUpQuantities(Integer[] pickUpQuantities) {
         this.pickUpQuantities = pickUpQuantities;
     }
 }

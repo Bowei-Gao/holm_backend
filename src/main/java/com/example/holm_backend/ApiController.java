@@ -38,15 +38,14 @@ public class ApiController {
     public PlanningOutput planning(@RequestBody PlanningInput input) {
         int loading_capacity = input.getLoading_capacity();
         Integer[] delivery_quantities = input.getDeliveryQuantities();
-        int[] pick_up_quantities = input.getPickUpQuantities();
+        Integer[] pick_up_quantities = input.getPickUpQuantities();
         Double[] x = input.getX();
         Double[] y = input.getY();
         Double[][] distances = input.getDistances();
-        for (int pick_up_quantity : pick_up_quantities) {
-            System.out.println(pick_up_quantity);
-        }
-        SavingsAlgorithm savingsAlgorithm = new SavingsAlgorithm(loading_capacity, delivery_quantities, x, y, distances);
+        SavingsAlgorithm savingsAlgorithm = new SavingsAlgorithm(loading_capacity, delivery_quantities, pick_up_quantities, x, y, distances);
+        SavingsAlgorithmCopy savingsAlgorithmCopy = new SavingsAlgorithmCopy(loading_capacity, delivery_quantities, pick_up_quantities, distances);
         List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes();
+        List<LinkedList<Integer>> result_savings_algorithm_copy = savingsAlgorithmCopy.getRoutes();
         return new PlanningOutput(counter.incrementAndGet(), result_savings_algorithm);
     }
 
