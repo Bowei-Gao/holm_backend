@@ -39,14 +39,15 @@ public class ApiController {
         int loading_capacity = input.getLoading_capacity();
         Integer[] delivery_quantities = input.getDeliveryQuantities();
         Integer[] pick_up_quantities = input.getPickUpQuantities();
-        Double[] x = input.getX();
-        Double[] y = input.getY();
+        // Double[] x = input.getX();
+        // Double[] y = input.getY();
         Double[][] distances = input.getDistances();
-        SavingsAlgorithm savingsAlgorithm = new SavingsAlgorithm(loading_capacity, delivery_quantities, pick_up_quantities, x, y, distances);
+        // SavingsAlgorithm savingsAlgorithm = new SavingsAlgorithm(loading_capacity, delivery_quantities, pick_up_quantities, x, y, distances);
         SavingsAlgorithmCopy savingsAlgorithmCopy = new SavingsAlgorithmCopy(loading_capacity, delivery_quantities, pick_up_quantities, distances);
-        List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes();
+        // List<LinkedList<Integer>> result_savings_algorithm = savingsAlgorithm.getRoutes();
         List<LinkedList<Integer>> result_savings_algorithm_copy = savingsAlgorithmCopy.getRoutes();
-        return new PlanningOutput(counter.incrementAndGet(), result_savings_algorithm);
+        // return new PlanningOutput(counter.incrementAndGet(), result_savings_algorithm);
+        return new PlanningOutput(counter.incrementAndGet(), result_savings_algorithm_copy);
     }
 
     @PostMapping("/depotsCreate")

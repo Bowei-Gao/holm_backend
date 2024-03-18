@@ -142,6 +142,7 @@ public class SavingsAlgorithm {
         }
     }
 
+
     public void updateSavings() {
         this.savings.add(new LinkedList<>(this.savings.get(this.maxElementIndex)));
 

@@ -1,10 +1,7 @@
 package com.example.holm_backend;
 
 import javax.xml.transform.dom.DOMSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -35,9 +32,22 @@ public class CreateDepots {
 
         String sql = "INSERT INTO depots (names, x, y, capacity, fixedCost) VALUES (?, ?, ?, ?, ?)";
 
+        String createDepotsTable = "CREATE TABLE IF NOT EXISTS depots (" +
+                "id BIGINT AUTO_INCREMENT NOT NULL, " +
+                "names VARCHAR(50) NOT NULL UNIQUE, " +
+                "x DOUBLE NOT NULL, " +
+                "y DOUBLE NOT NULL, " +
+                "capacity INT NOT NULL, " +
+                "fixedCost INT NOT NULL, " +
+                "PRIMARY KEY(id) ) Engine=INNODB DEFAULT CHARSET=UTF8;";
+
         int sum = 0;
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
+            try (Statement stmt = conn.createStatement()) {
+                stmt.executeUpdate(createDepotsTable);
+            }
+
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 for (int i = 0; i < this.names.length; i++) {
                     ps.setString(1, this.names[i]);

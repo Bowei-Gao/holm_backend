@@ -8,6 +8,7 @@ import java.util.List;
 public class SavingsAlgorithmCopy {
     private List<Integer> deliveryQuantities;
     private List<Integer> pick_up_quantities;
+    private List<Integer> max_quantities;
     private int n;
     private List<LinkedList<Integer>> routes;
     private List<Double> dists;
@@ -22,10 +23,15 @@ public class SavingsAlgorithmCopy {
 
         this.deliveryQuantities = new ArrayList<>();
         this.pick_up_quantities = new ArrayList<>();
+        this.max_quantities = new ArrayList<>();
 
         this.deliveryQuantities.addAll(Arrays.asList(delivery_quantities));
 
         this.pick_up_quantities.addAll(Arrays.asList(pick_up_quantities));
+
+        for (int i = 0; i < deliveryQuantities.size(); i++) {
+            this.max_quantities.add(Math.max(this.deliveryQuantities.get(i), this.pick_up_quantities.get(i)));
+        }
 
         this.dists = new ArrayList<>();
         for (int i = 1; i < distances[0].length; i++) {
@@ -106,6 +112,26 @@ public class SavingsAlgorithmCopy {
         }
     }
 
+    public void updateMaxQuantities() {
+        int head_max = this.max_quantities.get(this.maxListIndex) + this.deliveryQuantities.get(this.maxElementIndex);
+        int tail_max = this.max_quantities.get(this.maxElementIndex) + this.pick_up_quantities.get(this.maxListIndex);
+        this.max_quantities.add(Math.max(head_max, tail_max));
+
+        if (this.maxListIndex > this.maxElementIndex) {
+            this.max_quantities.remove(this.maxListIndex);
+            this.max_quantities.remove(this.maxElementIndex);
+        } else {
+            this.max_quantities.remove(this.maxElementIndex);
+            this.max_quantities.remove(this.maxListIndex);
+        }
+    }
+
+    public int getMaxQuantities() {
+        int head_max = this.max_quantities.get(this.maxListIndex) + this.deliveryQuantities.get(this.maxElementIndex);
+        int tail_max = this.max_quantities.get(this.maxElementIndex) + this.pick_up_quantities.get(this.maxListIndex);
+        return Math.max(head_max, tail_max);
+    }
+
     public void updateDeliveryQuantities() {
         this.deliveryQuantities.add(this.deliveryQuantities.get(this.maxListIndex) + this.deliveryQuantities.get(this.maxElementIndex));
 
@@ -115,6 +141,18 @@ public class SavingsAlgorithmCopy {
         } else {
             this.deliveryQuantities.remove(this.maxElementIndex);
             this.deliveryQuantities.remove(this.maxListIndex);
+        }
+    }
+
+    public void updatePickUpQuantities() {
+        this.pick_up_quantities.add(this.pick_up_quantities.get(this.maxListIndex) + this.pick_up_quantities.get(this.maxElementIndex));
+
+        if (this.maxListIndex > this.maxElementIndex) {
+            this.pick_up_quantities.remove(this.maxListIndex);
+            this.pick_up_quantities.remove(this.maxElementIndex);
+        } else {
+            this.pick_up_quantities.remove(this.maxElementIndex);
+            this.pick_up_quantities.remove(this.maxListIndex);
         }
     }
 
@@ -153,12 +191,14 @@ public class SavingsAlgorithmCopy {
 
         while (this.savings.get(this.maxListIndex).get(this.maxElementIndex) >= 0) {
             this.updateRoutes();
+            this.updateMaxQuantities();
             this.updateDeliveryQuantities();
+            this.updatePickUpQuantities();
             this.updateSavings();
 
             this.argmax(this.savings);
 
-            while (this.savings.get(this.maxListIndex).get(this.maxElementIndex) >= 0 && this.deliveryQuantities.get(this.maxListIndex) + this.deliveryQuantities.get(this.maxElementIndex) > this.loading_capacity) {
+            while (this.savings.get(this.maxListIndex).get(this.maxElementIndex) >= 0 && this.getMaxQuantities() > this.loading_capacity) {
                 this.savings.get(this.maxListIndex).set(this.maxElementIndex, Double.NEGATIVE_INFINITY);
                 this.savings.get(this.maxElementIndex).set(this.maxListIndex, Double.NEGATIVE_INFINITY);
                 this.argmax(this.savings);
