@@ -47,7 +47,7 @@ public class AddAlgorithm {
         }
 
         for (int i = 0; i < distances.length; i ++) {
-            for (int j = 0; j < distances[0].length; j ++) {
+            for (int j = 0; j < distances[i].length; j ++) {
                 this.distances[i][j] = (int)(this.distances[i][j] * this.variable_cost_rates[j] * this.weightings[j]);
             }
         }

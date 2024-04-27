@@ -1,5 +1,7 @@
 package com.example.holm_backend;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -17,8 +19,16 @@ public class ApiController {
         int variable_costs_per_km = input.getVariable_costs_per_km();
         int[] fixed_costs = input.getFixed_costs();
         int[][] distances = input.getDistances();
-        double[] variable_cost_rates = input.getVariable_cost_rates();
-        double[] weightings = input.getWeightings();
+        // double[] variable_cost_rates = input.getVariable_cost_rates();
+        // double[] weightings = input.getWeightings();
+        double[] variable_cost_rates = new double[distances[0].length];
+        double[] weightings = new double[distances[0].length];
+        for (int i = 0; i < distances[0].length; i++) {
+            variable_cost_rates[i] = 1.0;
+        }
+        for (int i = 0; i < distances[0].length; i++) {
+            weightings[i] = 1.0;
+        }
         AddAlgorithm addAlgorithm = new AddAlgorithm(fixed_costs ,distances, variable_cost_rates, weightings);
         int[] result_add_algorithm = addAlgorithm.getStrategic();
         return new StrategicOutput(counter.incrementAndGet(), result_add_algorithm);
@@ -88,5 +98,21 @@ public class ApiController {
         DeleteCustomers deleteCustomers = new DeleteCustomers(names);
         int result_customersDelete = deleteCustomers.UpdateDatabase();
         return new CustomerOutput(counter.incrementAndGet(), result_customersDelete);
+    }
+
+    @GetMapping("allDepots")
+    public DepotsOutput getAllDepots() throws SQLException {
+        AllDepots allDepots = new AllDepots();
+        ArrayList<DepotEntity> depots = allDepots.getAllDepots();
+
+        return new DepotsOutput(counter.incrementAndGet(), depots);
+    }
+
+    @GetMapping("allCustomers")
+    public CustomersOutput getAllCustomers() throws SQLException {
+        AllCustomers allCustomers = new AllCustomers();
+        ArrayList<CustomerEntity> customers = allCustomers.getAllCustomers();
+
+        return new CustomersOutput(counter.incrementAndGet(), customers);
     }
 }
