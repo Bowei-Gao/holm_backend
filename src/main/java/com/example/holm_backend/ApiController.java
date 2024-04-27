@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -101,18 +102,20 @@ public class ApiController {
     }
 
     @GetMapping("allDepots")
-    public DepotsOutput getAllDepots() throws SQLException {
+    @ResponseBody
+    public ResponseEntity<ArrayList<DepotEntity>> getAllDepots() throws SQLException {
         AllDepots allDepots = new AllDepots();
         ArrayList<DepotEntity> depots = allDepots.getAllDepots();
 
-        return new DepotsOutput(counter.incrementAndGet(), depots);
+        return ResponseEntity.ok(depots);
     }
 
     @GetMapping("allCustomers")
-    public CustomersOutput getAllCustomers() throws SQLException {
+    @ResponseBody
+    public ResponseEntity<ArrayList<CustomerEntity>> getAllCustomers() throws SQLException {
         AllCustomers allCustomers = new AllCustomers();
         ArrayList<CustomerEntity> customers = allCustomers.getAllCustomers();
 
-        return new CustomersOutput(counter.incrementAndGet(), customers);
+        return ResponseEntity.ok(customers);
     }
 }

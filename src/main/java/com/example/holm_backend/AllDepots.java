@@ -36,8 +36,8 @@ public class AllDepots {
                 String names = resultSet.getString("names");
                 Double x = resultSet.getDouble("x");
                 Double y = resultSet.getDouble("y");
-                Integer capacities = resultSet.getInt("capacities");
-                Integer fixed_costs = resultSet.getInt("fixed_costs");
+                Integer capacities = resultSet.getInt("capacity");
+                Integer fixed_costs = resultSet.getInt("fixedCost");
 
                 depots.add(new DepotEntity(names, x, y, capacities, fixed_costs));
             }
